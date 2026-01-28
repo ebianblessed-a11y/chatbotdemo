@@ -6,5 +6,31 @@
 <body>
   <h1>Chatbot Demo Website</h1>
   <p>This site will have an AI chatbot.</p>
+  <div id="chatbox" style="position:fixed;bottom:20px;right:20px;width:300px;height:400px;border:1px solid #333;background:white;">
+  <div style="background:#333;color:white;padding:10px;">Chat</div>
+  <div id="messages" style="padding:10px;height:300px;overflow:auto;"></div>
+  <input id="userInput" type="text" placeholder="Type a message..." style="width:100%;box-sizing:border-box;">
+</div>
+
+<script>
+const input = document.getElementById('userInput');
+const messages = document.getElementById('messages');
+
+input.addEventListener('keypress', function(e){
+  if(e.key==='Enter'){
+    const userMsg = document.createElement('div');
+    userMsg.textContent = 'You: ' + input.value;
+    messages.appendChild(userMsg);
+
+    const botMsg = document.createElement('div');
+    botMsg.textContent = 'Bot: (AI reply will appear here)';
+    messages.appendChild(botMsg);
+
+    input.value='';
+    messages.scrollTop = messages.scrollHeight;
+  }
+});
+</script>
+
 </body>
 </html>

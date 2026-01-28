@@ -16,21 +16,50 @@
 const input = document.getElementById('userInput');
 const messages = document.getElementById('messages');
 
-input.addEventListener('keypress', function(e){
+const OPENAI_API_KEY = <script>
+const input = document.getElementById('userInput');
+const messages = document.getElementById('messages');
+
+const OPENAI_API_KEY = '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'; // <-- replace with your key
+
+async function getAIResponse(userText) {
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type':'application/json',
+      'Authorization':'Bearer ' + OPENAI_API_KEY
+    },
+    body: JSON.stringify({
+      model: 'gpt-3.5-turbo',
+      messages: [{role:'user', content:userText}]
+    })
+  });
+  const data = await response.json();
+  return data.choices[0].message.content;
+}
+
+input.addEventListener('keypress', async function(e){
   if(e.key==='Enter'){
     const userMsg = document.createElement('div');
     userMsg.textContent = 'You: ' + input.value;
     messages.appendChild(userMsg);
 
     const botMsg = document.createElement('div');
-    botMsg.textContent = 'Bot: (AI reply will appear here)';
+    botMsg.textContent = 'Bot: ...';
     messages.appendChild(botMsg);
+
+    messages.scrollTop = messages.scrollHeight;
+
+    const aiText = await getAIResponse(input.value);
+    botMsg.textContent = 'Bot: ' + aiText;
 
     input.value='';
     messages.scrollTop = messages.scrollHeight;
   }
 });
 </script>
+
+
 
 </body>
 </html>
